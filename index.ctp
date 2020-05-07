@@ -16,7 +16,7 @@ echo $this->Html->link(
 		<th>Created</th>
 	</tr>
 
-<!-- ここから$posts配列をループして、投稿記事の情報を表示 -->
+<!-- ここから、$posts配列をループして、投稿記事の情報を表示 -->
 
 	<?php foreach ($posts as $post) : ?>
 	<tr>
