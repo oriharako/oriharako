@@ -8,5 +8,11 @@ class Post extends AppModel {
 			'rule' => 'notBlank'
 		)
 	);
+
+	public $belongsTo = 'User';
+
+	public function isOwnedBy($post, $user) {
+		return $this->field('id', array('id' => $post, 'user_id' => $user)) !== false;
+	}
 }
 ?>
