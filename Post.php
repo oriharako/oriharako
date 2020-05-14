@@ -1,11 +1,15 @@
 <?php
 class Post extends AppModel {
+	var $name = 'posts';
+
 	public $validate = array(
 		'title' => array(
-			'rule' => 'notBlank'
+			'rule' => 'notBlank',
+			'message' => 'タイトルを記入してください。'
 		),
 		'body' => array(
-			'rule' => 'notBlank'
+			'rule' => 'notBlank',
+			'message' => '本文を記入してください。'
 		)
 	);
 

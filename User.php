@@ -1,37 +1,59 @@
 <?php
-App::uses('AppModel', 'Model');
 App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
+App::uses('AppModel', 'Model');
 
 class User extends AppModel {
+
+	var $name = 'User';
+	var $useTable = 'users';
+
 	public $validate = array(
-		'username' => array(
-			'required' => array(
+		//DBに登録する名前の設定
+		'name' => array(
+			array(
 				'rule' => 'notBlank',
-				'message' => 'A username is required'
-			)
+				'message' => '氏名が未入力です。'
+			),
 		),
+																						//DBに登録するメールアドレスの設定
+		'mail' => array(
+			array(
+				'rule' => 'notBlank',
+				'message' => 'メールアドレスが未入力です。'
+			),
+			array(
+				'rule' => 'email',
+				'message' => 'メールアドレスが不適切です。'
+			),
+			array(
+				'rule' => 'isUnique',
+				'message' => 'このメールアドレスは既に登録されています。'
+			),
+		),
+		//DBに登録するパスワードの設定
 		'password' => array(
-			'required' => array(
+			array(
 				'rule' => 'notBlank',
-				'message' => 'A password is required'
-			)
-		),
-		'role' => array(
-			'valid' => array(
-				'rule' => array('inList', array('admin', 'author')),
-				'message' => 'Please enter a valid role',
-				'allowEmpty' => false
-			)
+				'message' => 'パスワードが未入力です。'
+			),
 		)
 	);
 
 	public function beforeSave($options = array()) {
+
 		if (isset($this->data[$this->alias]['password'])) {
 			$passwordHasher = new BlowfishPasswordHasher();
 			$this->data[$this->alias]['password'] = $passwordHasher->hash(
-			$this->data[$this->alias]['password']
+				$this->data[$this->alias]['password']
 			);
 		}
 		return true;
 	}
+
+	public $hasMany = 'Posts';
+
+			//	public function isOwnedBy($user) {
+			//		return $this->field('id', array('id' => $user)) !== false;
+			//	}
 }
+?>
